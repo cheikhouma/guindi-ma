@@ -9,7 +9,7 @@ import { Sidebar } from './components/Layout/Sidebar';
 import { HomePage } from './components/Home/HomePage';
 import { MapView } from './components/Map/MapView';
 import { SearchPage } from './components/Search/SearchPage';
-import { FavoritesPage } from './components/Favorites/FavoritesPage';
+
 import { ChatPage } from './components/Chat/ChatPage';
 import { AdminDashboard } from './components/Admin/AdminDashboard';
 import { SchoolDetail } from './components/School/SchoolDetail';
@@ -18,6 +18,7 @@ import { AddSchoolForm } from './components/Admin/AddSchool';
 import { EditSchoolForm } from './components/Admin/EditSchool';
 import { LoginPage } from './components/Auth/LoginPage';
 import { SignupPage } from './components/Auth/SignupPage';
+import { UnderConstruction } from './components/Layout/UnderConstruction';
 
 // Layout Component
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
@@ -89,7 +90,7 @@ const ProtectedRoute = ({ children, adminOnly = false }: { children: React.React
 const HomeRoute = () => <HomePage />;
 const MapRoute = () => <MapView />;
 const SearchRoute = () => <SearchPage />;
-const FavoritesRoute = () => <FavoritesPage />;
+
 const ChatRoute = () => <ChatPage />;
 const SchoolDetailRoute = () => <SchoolDetail />;
 const AdminRoute = () => <AdminDashboard />;
@@ -97,6 +98,7 @@ const AddSchoolRoute = () => <AddSchoolForm />;
 const EditSchoolRoute = () => <EditSchoolForm />;
 const LoginRoute = () => <LoginPage />;
 const SignupRoute = () => <SignupPage />;
+const UnderConstructionRoute = () => <UnderConstruction />;
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -115,6 +117,9 @@ function App() {
         {/* Auth Routes - No Layout */}
         <Route path="/login" element={<LoginRoute />} />
         <Route path="/signup" element={<SignupRoute />} />
+        
+        {/* Under Construction Routes - No Layout */}
+        <Route path="/under-construction" element={<UnderConstructionRoute />} />
         
         {/* Main Routes - With Layout */}
         <Route path="/" element={
@@ -141,14 +146,7 @@ function App() {
           </AppLayout>
         } />
         
-        {/* Protected Routes */}
-        <Route path="/favorites" element={
-          <AppLayout>
-            <ProtectedRoute>
-              <FavoritesRoute />
-            </ProtectedRoute>
-          </AppLayout>
-        } />
+
         
         <Route path="/chat" element={
           <AppLayout>

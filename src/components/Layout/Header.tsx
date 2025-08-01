@@ -22,7 +22,6 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'home', label: 'Accueil', icon: Home, path: '/', action: goToHome },
     { id: 'map', label: 'Carte', icon: Map, path: '/map', action: goToMap },
     { id: 'search', label: 'Recherche', icon: Search, path: '/search', action: goToSearch },
-    { id: 'favorites', label: 'Favoris', icon: Heart, path: '/favorites', action: goToFavorites },
     { id: 'chat', label: 'Assistant', icon: MessageCircle, path: '/chat', action: goToChat },
     ...(isAdmin ? [{ id: 'admin', label: 'Tableau de bord', icon: BarChart3, path: '/admin', action: goToAdmin }] : [])
   ];

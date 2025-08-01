@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, SlidersHorizontal } from 'lucide-react';
+import { Search, Filter, SlidersHorizontal, Heart, Star } from 'lucide-react';
 import { School, FilterState } from '../../types';
 import { mockSchools, regions, schoolTypes } from '../../data/mockData';
 import { SchoolCard } from '../School/SchoolCard';
@@ -12,6 +12,7 @@ export const SearchPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<'name' | 'rating' | 'students'>('rating');
+  const [activeTab, setActiveTab] = useState<'search' | 'favorites'>('search');
   const [filters, setFilters] = useState<FilterState>({
     type: [],
     region: [],
@@ -48,6 +49,21 @@ export const SearchPage: React.FC = () => {
     }
   });
 
+  const favoriteSchools = mockSchools.filter(school => 
+    user?.favorites.includes(school.id)
+  ).sort((a, b) => {
+    switch (sortBy) {
+      case 'name':
+        return a.name.localeCompare(b.name);
+      case 'rating':
+        return b.rating - a.rating;
+      case 'students':
+        return b.students - a.students;
+      default:
+        return 0;
+    }
+  });
+
   const handleFilterChange = (key: keyof FilterState, value: any) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
@@ -67,6 +83,34 @@ export const SearchPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Tabs */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2">
+        <div className="flex space-x-1">
+          <button
+            onClick={() => setActiveTab('search')}
+            className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+              activeTab === 'search'
+                ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            }`}
+          >
+            <Search className="w-4 h-4" />
+            <span>Recherche</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('favorites')}
+            className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+              activeTab === 'favorites'
+                ? 'bg-red-50 text-red-700 border border-red-200'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            }`}
+          >
+            <Heart className="w-4 h-4" />
+            <span>Favoris ({user?.favorites.length || 0})</span>
+          </button>
+        </div>
+      </div>
+
       {/* Search and Filters Header */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
@@ -111,7 +155,10 @@ export const SearchPage: React.FC = () => {
         {/* Results count */}
         <div className="mt-4 pt-4 border-t border-gray-200">
           <p className="text-sm text-gray-600">
-            {filteredSchools.length} établissement{filteredSchools.length > 1 ? 's' : ''} trouvé{filteredSchools.length > 1 ? 's' : ''}
+            {activeTab === 'search' 
+              ? `${filteredSchools.length} établissement${filteredSchools.length > 1 ? 's' : ''} trouvé${filteredSchools.length > 1 ? 's' : ''}`
+              : `${favoriteSchools.length} favori${favoriteSchools.length > 1 ? 's' : ''} sauvegardé${favoriteSchools.length > 1 ? 's' : ''}`
+            }
           </p>
         </div>
       </div>
@@ -199,7 +246,7 @@ export const SearchPage: React.FC = () => {
 
       {/* Results */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {filteredSchools.map(school => (
+        {(activeTab === 'search' ? filteredSchools : favoriteSchools).map(school => (
           <SchoolCard
             key={school.id}
             school={school}
@@ -210,7 +257,7 @@ export const SearchPage: React.FC = () => {
         ))}
       </div>
 
-      {filteredSchools.length === 0 && (
+      {activeTab === 'search' && filteredSchools.length === 0 && (
         <div className="text-center py-12">
           <div className="text-gray-400 mb-4">
             <Search className="w-12 h-12 mx-auto" />
@@ -218,6 +265,18 @@ export const SearchPage: React.FC = () => {
           <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun établissement trouvé</h3>
           <p className="text-gray-600">
             Essayez de modifier vos critères de recherche ou vos filtres.
+          </p>
+        </div>
+      )}
+
+      {activeTab === 'favorites' && favoriteSchools.length === 0 && (
+        <div className="text-center py-12">
+          <div className="text-gray-400 mb-4">
+            <Heart className="w-12 h-12 mx-auto" />
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun favori sauvegardé</h3>
+          <p className="text-gray-600">
+            Ajoutez des écoles à vos favoris pour les retrouver facilement ici.
           </p>
         </div>
       )}
