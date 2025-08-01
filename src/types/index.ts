@@ -34,7 +34,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'admin' | 'representant' | 'ministere';
   favorites: string[];
   avatar?: string;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Filter, SlidersHorizontal, Heart, Star } from 'lucide-react';
 import { School, FilterState } from '../../types';
-import { mockSchools, regions, schoolTypes } from '../../data/mockData';
+import { mockSchools, regions, schoolLevels } from '../../data/mockData';
 import { SchoolCard } from '../School/SchoolCard';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useAuth } from '../../hooks/useAuth';
@@ -171,7 +171,7 @@ export const SearchPage: React.FC = () => {
             <div>
               <h4 className="font-medium text-gray-900 mb-3">Type d'établissement</h4>
               <div className="space-y-2">
-                {schoolTypes.map(type => (
+                {schoolLevels.map(type => (
                   <label key={type.value} className="flex items-center space-x-2">
                     <input
                       type="checkbox"

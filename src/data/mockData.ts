@@ -46,7 +46,7 @@ export const mockSchools: School[] = [
     type: 'public',
     level: 'secondary',
     address: 'Rue Félix Faure,Medina, Dakar',
-    region: 'Dakar',
+    region: 'Kaffrine',
     coordinates: { lat: 14.6728, lng: -17.4519 },
     students: 680,
     facilities: ['Bibliothèque', 'Laboratoire informatique', 'Terrain de basket', 'Infirmerie'],
@@ -58,7 +58,7 @@ export const mockSchools: School[] = [
         userName: 'Mamadou Sy',
         rating: 5,
         comment: 'Un collège avec d\'excellents résultats au BFEM.',
-        date: '2024-01-20'
+        date: '2024-12-20'
       }
     ],
     images: [
@@ -74,7 +74,7 @@ export const mockSchools: School[] = [
     level: 'high_school',
     type: 'public',
     address: 'Avenue Lamine Guèye, Dakar',
-    region: 'Dakar',
+    region: 'Fatick',
     coordinates: { lat: 14.6892, lng: -17.4479 },
     students: 1200,
     facilities: ['Bibliothèque', 'Laboratoire de sciences', 'Terrain de football', 'Amphithéâtre'],
@@ -141,7 +141,7 @@ export const mockSchools: School[] = [
     type: 'private',
     level: 'high_school',
     address: 'Mermoz, Dakar',
-    region: 'Dakar',
+    region: 'Kédougou',
     coordinates: { lat: 14.7167, lng: -17.4694 },
     students: 780,
     facilities: ['Piscine', 'Bibliothèque', 'Laboratoire informatique', 'Terrains sportifs'],
@@ -171,7 +171,7 @@ export const mockSchools: School[] = [
     level: 'high_school',
     type: 'private',
     address: 'Avenue Cheikh Anta Diop, Ouakam, Dakar',
-    region: 'Dakar',
+    region: 'Matam',
     coordinates: { lat: 14.6870, lng: -17.4830 },
     students: 2500,
     facilities: ['Cantine', 'Bibliothèque', 'Gymnase', 'Laboratoire scientifique'],
@@ -201,7 +201,7 @@ export const mockSchools: School[] = [
     level: 'primary',
     type: 'private',
     address: 'Hann Bel‑Air, Dakar',
-    region: 'Dakar',
+    region: 'Saint-Louis',
     coordinates: { lat: 14.6950, lng: -17.3650 },
     students: 5000,
     facilities: ['Programme bilingue FR/SN', 'Cantine', 'Terrain de jeux'],
@@ -267,10 +267,15 @@ export const regions = [
   'Matam'
 ];
 
-export const schoolTypes = [
+export const schoolLevels = [
   { value: 'primary', label: 'École Primaire', color: 'bg-yellow-500' },
   { value: 'secondary', label: 'Collège', color: 'bg-red-500' },
   { value: 'high_school', label: 'Lycée', color: 'bg-green-500' },
+];
+
+export const schoolTypes = [
+  { value: 'public', label: 'Publique', color: 'bg-orange-500' },
+  { value: 'private', label: 'Privée', color: 'bg-blue-500' },
 ];
 
 
