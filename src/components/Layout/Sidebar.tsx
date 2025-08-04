@@ -1,27 +1,35 @@
 import React from 'react';
-import { Home, Map, Search, Heart, BarChart3, MessageCircle, X } from 'lucide-react';
+import { Home, Map,  BarChart3, MessageCircle, X, School, Plus } from 'lucide-react';
 import { useNavigation } from '../../hooks/useNavigation';
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   isAdmin: boolean;
+  isRepresentant: boolean;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   onClose,
-  isAdmin
+  isAdmin,
+  isRepresentant
 }) => {
-  const { currentPath, goToHome, goToMap, goToSearch, goToFavorites, goToChat, goToAdmin } = useNavigation();
+  const { currentPath, goToHome, goToMap, goToSearch,  goToChat, goToAdmin, goToAddSchool } = useNavigation();
 
-  const menuItems = [
-    { id: 'home', label: 'Accueil', icon: Home, path: '/', action: goToHome },
-    { id: 'map', label: 'Carte', icon: Map, path: '/map', action: goToMap },
-    { id: 'search', label: 'Recherche', icon: Search, path: '/search', action: goToSearch },
-    { id: 'chat', label: 'Assistant', icon: MessageCircle, path: '/chat', action: goToChat },
-    ...(isAdmin ? [{ id: 'admin', label: 'Tableau de bord', icon: BarChart3, path: '/admin', action: goToAdmin }] : [])
-  ];
+const menuItems = [
+  { id: 'home', label: 'Accueil', icon: Home, path: '/', action: goToHome },
+  { id: 'map', label: 'Carte', icon: Map, path: '/map', action: goToMap },
+  { id: 'search', label: 'Écoles', icon: School, path: '/search', action: goToSearch },
+  { id: 'chat', label: 'Assistant', icon: MessageCircle, path: '/chat', action: goToChat },
+  ...(isAdmin
+    ? [{ id: 'admin', label: 'Tableau de bord', icon: BarChart3, path: '/admin', action: goToAdmin }]
+    : []),
+  ...(isRepresentant
+    ? [{ id: 'representant', label: 'Ajouter une école', icon: Plus, path: '/add-school', action: goToAddSchool }]
+    : [])
+];
+
 
   const handleItemClick = (action: () => void) => {
     action();

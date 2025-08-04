@@ -43,24 +43,34 @@ export const useAuth = () => {
         setUser({
           ...mockUser,
           email: email,
-          name: 'Admin User'
+          name: 'Admin User',
+          phone: '+221 77 123 45 67',
+          status: 'active',
+          createdAt: '2024-01-15'
         });
-      } else if (email === 'user@example.com' && password === 'user123') {
-        // Connexion utilisateur normal
+      } else if (email === 'representant@example.com' && password === 'user123') {
+        // Connexion representant
         setUser({
           id: '2',
-          name: 'Utilisateur Normal',
+          name: 'Representant User',
           email: email,
-          role: 'user',
+          role: 'representant',
           favorites: ['1', '2'],
-          avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100'
+          avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
+          phone: '+221 76 234 56 78',
+          status: 'active',
+          createdAt: '2024-02-20'
         });
       } else {
         // Connexion avec les données mockées par défaut
         setUser({
           ...mockUser,
           email: email,
-          name: email.split('@')[0] // Utiliser la partie avant @ comme nom
+          role: 'user',
+          name: email.split('@')[0], // Utiliser la partie avant @ comme nom
+          phone: '+221 77 123 45 67',
+          status: 'active',
+          createdAt: '2024-01-15'
         });
       }
     } catch (error) {
@@ -71,7 +81,7 @@ export const useAuth = () => {
     }
   }, []);
 
-  const register = useCallback(async (name: string, email: string, password: string) => {
+  const register = useCallback(async (name: string, email: string, _password: string) => {
     setIsLoading(true);
     try {
       // Simulate API call
@@ -83,7 +93,10 @@ export const useAuth = () => {
         email,
         role: 'user',
         favorites: [],
-        avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100'
+        avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
+        phone: '+221 77 123 45 67',
+        status: 'pending',
+        createdAt: new Date().toISOString().split('T')[0]
       };
       
       setUser(newUser);

@@ -19,7 +19,7 @@ import {
   Map,
   Crosshair
 } from 'lucide-react';
-import { useNavigation } from '../../hooks/useNavigation';
+import { useNavigation } from '../../../hooks/useNavigation';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -172,24 +172,14 @@ export const AddSchoolForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white-50 to-blue-50  py-8">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className=" container  bg-gradient-to-br from-white-50 to-blue-50 ">
+      <div className=" mx-auto px-4">
+     
+        
         {/* Header */}
-        <div className="mb-8">
-          <button
-            onClick={goBack}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors mb-4"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Retour au tableau de bord</span>
-          </button>
-          
+        <div className="mb-8">          
           <div className="text-center">
-            <div className="flex items-center justify-center mb-4">
-              <div className="p-3 bg-blue-500 rounded-xl">
-                <Plus className="w-8 h-8 text-white" />
-              </div>
-            </div>
+           
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Ajouter un établissement</h1>
             <p className="text-gray-600">Remplissez le formulaire ci-dessous pour ajouter un nouvel établissement</p>
           </div>

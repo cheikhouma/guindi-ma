@@ -16,6 +16,7 @@ export const SearchPage: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({
     type: [],
     region: [],
+    level: [],
     minStudents: 0,
     maxStudents: 50000,
     minRating: 0
@@ -32,6 +33,7 @@ export const SearchPage: React.FC = () => {
     // Filters
     if (filters.type.length > 0 && !filters.type.includes(school.type)) return false;
     if (filters.region.length > 0 && !filters.region.includes(school.region)) return false;
+    if (filters.level.length > 0 && !school.level.some(level => filters.level.includes(level))) return false;
     if (school.students < filters.minStudents || school.students > filters.maxStudents) return false;
     if (school.rating < filters.minRating) return false;
 
@@ -68,7 +70,7 @@ export const SearchPage: React.FC = () => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
-  const toggleArrayFilter = (key: 'type' | 'region', value: string) => {
+  const toggleArrayFilter = (key: 'type' | 'region' | 'level', value: string) => {
     setFilters(prev => ({
       ...prev,
       [key]: prev[key].includes(value)
@@ -180,6 +182,24 @@ export const SearchPage: React.FC = () => {
                       className="rounded text-blue-600 focus:ring-blue-500"
                     />
                     <span className="text-sm text-gray-700">{type.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Niveaux */}
+            <div>
+              <h4 className="font-medium text-gray-900 mb-3">Niveaux</h4>
+              <div className="space-y-2">
+                {schoolLevels.map(level => (
+                  <label key={level.value} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={filters.level.includes(level.value)}
+                      onChange={() => toggleArrayFilter('level', level.value)}
+                      className="rounded text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="text-sm text-gray-700">{level.label}</span>
                   </label>
                 ))}
               </div>

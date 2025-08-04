@@ -13,19 +13,20 @@ import {
   Award,
   ArrowRight,
   MessageCircle,
-  Home
+  Home,
+  Building2
 } from 'lucide-react';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useNavigate } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
-  const { goToHome, goToSearch, goToMap, goToFavorites, goToChat } = useNavigation();
+  const { goToHome, goToSearch, goToMap,  goToChat } = useNavigation();
   const navigate = useNavigate();
 
   const navigationLinks = [
     { id: 'home', label: 'Accueil', action: goToHome, icon: <Home className="w-4 h-4" /> },
-    { id: 'search', label: 'Rechercher', action: goToSearch, icon: <Award className="w-4 h-4" /> },
+    { id: 'search', label: 'Ecole', action: goToSearch, icon: <Building2 className="w-4 h-4" /> },
     { id: 'map', label: 'Carte', action: goToMap, icon: <MapPin className="w-4 h-4" /> },
     { id: 'chat', label: 'Assistant IA', action: goToChat, icon: <MessageCircle className="w-4 h-4" /> },
   ];

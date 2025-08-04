@@ -1,6 +1,6 @@
 import React from 'react';
-import { Menu, User, LogOut, GraduationCap } from 'lucide-react';
-import { Home, Map, Search, Heart, BarChart3, MessageCircle } from 'lucide-react';
+import { Menu, User, LogOut, GraduationCap, School, Plus } from 'lucide-react';
+import { Home, Map, BarChart3, MessageCircle } from 'lucide-react';
 import { useNavigation } from '../../hooks/useNavigation';
 
 interface HeaderProps {
@@ -8,23 +8,28 @@ interface HeaderProps {
   onLogout: () => void;
   onMenuClick: () => void;
   isAdmin: boolean;
+  isRepresentant: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   user,
   onLogout,
   onMenuClick,
-  isAdmin
+  isAdmin,
+  isRepresentant
 }) => {
-  const { currentPath, goToHome, goToMap, goToSearch, goToFavorites, goToChat, goToAdmin, goToLogin } = useNavigation();
+  const { currentPath, goToHome, goToMap, goToSearch, goToChat, goToAdmin, goToLogin, goToAddSchool } = useNavigation();
 
   const menuItems = [
     { id: 'home', label: 'Accueil', icon: Home, path: '/', action: goToHome },
     { id: 'map', label: 'Carte', icon: Map, path: '/map', action: goToMap },
-    { id: 'search', label: 'Recherche', icon: Search, path: '/search', action: goToSearch },
+    { id: 'search', label: 'Ecoles', icon: School, path: '/search', action: goToSearch },
     { id: 'chat', label: 'Assistant', icon: MessageCircle, path: '/chat', action: goToChat },
-    ...(isAdmin ? [{ id: 'admin', label: 'Tableau de bord', icon: BarChart3, path: '/admin', action: goToAdmin }] : [])
+    ...(isAdmin ? [{ id: 'admin', label: 'Tableau de bord', icon: BarChart3, path: '/admin', action: goToAdmin }] : []),
+    ...(isRepresentant ? [{ id: 'representant', label: 'Ajouter une école', icon: Plus, path: '/add-school', action: goToAddSchool }] : [])
   ];
+
+
 
   return (
     <header className="bg-white shadow-sm  border-b border-gray-200 sticky top-0 z-30">
@@ -38,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Menu className="w-6 h-6 text-gray-600" />
             </button>
-            
+
             <div className="flex items-center space-x-2">
               <div className="p-2 bg-blue-600 rounded-lg">
                 <GraduationCap className="w-6 h-6 text-white" />
@@ -52,17 +57,23 @@ export const Header: React.FC<HeaderProps> = ({
             {menuItems.map((item) => {
               // const Icon = item.icon;
               const isActive = currentPath === item.path;
-              
+
               return (
                 <button
                   key={item.id}
                   onClick={item.action}
+                  type="button"
+
                   className={`
                     flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium
                     transition-all duration-200
-                    ${isActive 
-                      ? 'bg-blue-50 text-blue-700 border border-blue-200' 
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                    ${isActive
+                      ? 'text-blue-700 '
+                      : 'text-gray-700 '
+                    }
+                    ${item.id == 'chat' ?
+                      'disabled:opacity-50 disabled:cursor-not-allowed'
+                      : ''
                     }
                   `}
                 >

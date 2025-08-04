@@ -68,15 +68,22 @@ export const SchoolDetail: React.FC = () => {
 
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case 'primary': return 'École Primaire';
-      case 'secondary': return 'Collège';
-      case 'high_school': return 'Lycée';
+      case 'private': return 'Privée';
+      case 'public': return 'Publique';
       default: return type;
     }
   };
 
   const getTypeColor = (type: string) => {
     switch (type) {
+      case 'private': return 'bg-orange-100 text-orange-800';
+      case 'public': return 'bg-blue-100 text-blue-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getLevelColor = (level: string) => {
+    switch (level) {
       case 'primary': return 'bg-green-100 text-green-800';
       case 'secondary': return 'bg-blue-100 text-blue-800';
       case 'high_school': return 'bg-purple-100 text-purple-800';
@@ -98,7 +105,7 @@ export const SchoolDetail: React.FC = () => {
     const csvData = [
       ['Nom', school.name],
       ['Type', getTypeLabel(school.type)],
-      ['Niveau', getLevelLabel(school.level)],
+      ['Niveaux', school.level.map(level => getLevelLabel(level)).join(', ')],
       ['Adresse', school.address],
       ['Région', school.region],
       ['Latitude', school.coordinates.lat.toString()],
@@ -134,7 +141,7 @@ export const SchoolDetail: React.FC = () => {
 
 Nom: ${school.name}
 Type: ${getTypeLabel(school.type)}
-Niveau: ${getLevelLabel(school.level)}
+Niveaux: ${school.level.map(level => getLevelLabel(level)).join(', ')}
 Adresse: ${school.address}
 Région: ${school.region}
 
@@ -227,9 +234,14 @@ Source: Guindi Ma - Plateforme de gestion des établissements scolaires du Sén�
           });
         },
         (error) => {
-          console.log('Erreur de géolocalisation:', error);
+          console.log('Erreur de géolocalisation:', error.message);
           // Utiliser une position par défaut (Dakar)
           setUserLocation({ lat: 14.7167, lng: -17.4677 });
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 60000
         }
       );
     } else {
@@ -442,6 +454,18 @@ Source: Guindi Ma - Plateforme de gestion des établissements scolaires du Sén�
                   </span>
                 </div>
                 
+                {/* Niveaux */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {school.level.map((level, index) => (
+                    <span
+                      key={index}
+                      className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getLevelColor(level)}`}
+                    >
+                      {getLevelLabel(level)}
+                    </span>
+                  ))}
+                </div>
+                
                 <div className="flex items-center space-x-2 text-xl mb-4">
                   <MapPin className="w-6 h-6" />
                   <span>{school.address}</span>
@@ -545,7 +569,7 @@ Source: Guindi Ma - Plateforme de gestion des établissements scolaires du Sén�
 
             <button
               onClick={openGoogleMaps}
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-xl font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
+              className="w-full fixed-bottom-0  bg-green-600 text-white py-3 px-4 rounded-xl font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
             >
               <Navigation className="w-5 h-5" />
               <span>Itinéraire Google Maps</span>

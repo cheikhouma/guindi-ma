@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  MapPin, 
-  School, 
-  Users, 
-  Star, 
-  ArrowRight, 
-  Search, 
-  MessageCircle, 
-  TrendingUp, 
+import {
+  MapPin,
+  School,
+  Users,
+  Star,
+  ArrowRight,
+  Search,
+  MessageCircle,
+  TrendingUp,
   Award,
   Globe,
   BookOpen,
-  GraduationCap,
-  Heart,
   Eye,
-  Clock,
   CheckCircle
 } from 'lucide-react';
 import { mockSchools } from '../../data/mockData';
 import { useNavigation } from '../../hooks/useNavigation';
 
 export const HomePage: React.FC = () => {
-  const { goToMap, goToSearch, goToChat } = useNavigation();
+  const { goToMap, goToSearch, goToChat, goToSchoolDetail } = useNavigation();
   const [animatedStats, setAnimatedStats] = useState({
     totalSchools: 0,
     regions: 0,
@@ -77,25 +74,25 @@ export const HomePage: React.FC = () => {
           <div className="absolute top-1/2 right-0 w-24 h-24 bg-white rounded-full translate-x-12 -translate-y-12"></div>
           <div className="absolute bottom-0 left-1/3 w-16 h-16 bg-white rounded-full translate-x-8 translate-y-8"></div>
         </div>
-        
+
         <div className="relative max-w-5xl mx-auto">
           <div className="text-center md:text-left">
             <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
               <Award className="w-5 h-5" />
               <span className="text-sm font-medium">Plateforme officielle du Sénégal</span>
             </div>
-            
+
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
               Trouvez l'école
               <span className="block text-yellow-300">parfaite</span>
               pour votre enfant
             </h1>
-            
+
             <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl">
-              Explorez plus de <span className="font-bold text-yellow-300">{stats.totalSchools}</span> établissements 
+              Explorez plus de <span className="font-bold text-yellow-300">{stats.totalSchools}</span> établissements
               répartis dans <span className="font-bold text-yellow-300">{stats.regions}</span> régions du Sénégal
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <button
                 onClick={goToMap}
@@ -105,7 +102,7 @@ export const HomePage: React.FC = () => {
                 <span>Explorer la carte</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
-              
+
               <button
                 onClick={goToSearch}
                 className="group border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-all duration-300 flex items-center justify-center space-x-3 backdrop-blur-sm hover:shadow-xl transform hover:-translate-y-1"
@@ -187,16 +184,24 @@ export const HomePage: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredSchools.map((school, index) => (
-            <div 
-              key={school.id} 
+            <div
+              key={school.id}
               className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:border-blue-300"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <div className={`w-3 h-3 rounded-full ${getLevelColor(school.level)}`}></div>
-                    <span className="text-sm font-medium text-gray-600">{getLevelLabel(school.level)}</span>
+                  {/* Niveaux */}
+                  <div className="flex flex-wrap gap-1 mb-2">
+                    {school.level.map((level, index) => (
+                      <span
+                        key={index}
+                        className={`inline-block px-2 py-1 rounded text-xs font-medium ${getLevelColor(level)}`}
+                      >
+                        {getLevelLabel(level)}
+                      </span>
+                    ))}
                   </div>
+
                   <h3 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-blue-600 transition-colors">
                     {school.name}
                   </h3>
@@ -210,7 +215,7 @@ export const HomePage: React.FC = () => {
                   <span className="text-sm font-bold text-yellow-800">{school.rating}</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
                 <span className="flex items-center">
                   <Users className="w-4 h-4 mr-1" />
@@ -226,7 +231,9 @@ export const HomePage: React.FC = () => {
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                   {school.type === 'private' ? 'Privé' : 'Public'}
                 </span>
-                <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center group">
+                <button onClick={() => goToSchoolDetail(school)}
+
+                  className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center group">
                   <Eye className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform" />
                   Voir détails
                 </button>
@@ -246,7 +253,7 @@ export const HomePage: React.FC = () => {
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Assistant intelligent</h3>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Notre IA vous aide à trouver l'établissement parfait selon vos critères : 
+                Notre IA vous aide à trouver l'établissement parfait selon vos critères :
                 localisation, niveau, budget, et plus encore.
               </p>
               <div className="flex items-center space-x-4 text-sm text-gray-600 mb-6">
@@ -278,7 +285,7 @@ export const HomePage: React.FC = () => {
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Comparaison avancée</h3>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Comparez facilement les établissements selon vos critères : 
+                Comparez facilement les établissements selon vos critères :
                 performance académique, infrastructures, coûts et plus.
               </p>
               <div className="flex items-center space-x-4 text-sm text-gray-600 mb-6">

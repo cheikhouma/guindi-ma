@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { 
-  School, 
-  Building2, 
-  MapPin, 
-  Users, 
-  Star, 
-  Phone, 
-  Mail, 
-  Calendar, 
-  Image, 
+import {
+  School,
+  Building2,
+  MapPin,
+  Users,
+  Star,
+  Phone,
+  Mail,
+  Calendar,
+  Image,
   Wrench,
   GraduationCap,
   Navigation,
@@ -20,9 +20,10 @@ import {
   Crosshair,
   Save
 } from 'lucide-react';
-import { School as SchoolType } from '../../types';
+import { School as SchoolType } from '../../../types';
 import { useParams, useNavigate } from 'react-router-dom';
-import { mockSchools } from '../../data/mockData';
+import { mockSchools } from '../../../data/mockData';
+import { AdminNav } from './AdminNav';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -58,7 +59,7 @@ export const EditSchoolForm: React.FC = () => {
 
   // Trouver l'école par son ID
   const school = mockSchools.find(s => s.id === id);
-  
+
   if (!school) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-white-50 to-blue-50 py-8">
@@ -78,7 +79,7 @@ export const EditSchoolForm: React.FC = () => {
     );
   }
 
-  const [form, setForm] = useState<School>(school);
+  const [form, setForm] = useState<SchoolType>(school);
 
   // Initialiser la position sélectionnée avec les coordonnées de l'école
   React.useEffect(() => {
@@ -163,14 +164,14 @@ export const EditSchoolForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simuler un délai de traitement
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     // Ici vous pouvez ajouter la logique pour sauvegarder les modifications
     console.log('École modifiée:', form);
     console.log('Nouvelles images:', imageFiles);
-    
+
     // Rediriger vers le tableau de bord admin
     navigate('/admin');
   };
@@ -187,6 +188,9 @@ export const EditSchoolForm: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white-50 to-blue-50 py-8">
       <div className="max-w-4xl mx-auto px-4">
+        {/* Navigation Admin */}
+        <AdminNav />
+
         {/* Header */}
         <div className="mb-8">
           <button
@@ -196,7 +200,7 @@ export const EditSchoolForm: React.FC = () => {
             <ArrowLeft className="w-5 h-5" />
             <span>Retour au tableau de bord</span>
           </button>
-          
+
           <div className="text-center">
             <div className="flex items-center justify-center mb-4">
               <div className="p-3 bg-blue-500 rounded-xl">
@@ -221,7 +225,7 @@ export const EditSchoolForm: React.FC = () => {
               <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
                 Informations générales
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
@@ -229,13 +233,13 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <School className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      name="name" 
-                      value={form.name} 
-                      onChange={handleChange} 
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" 
+                    <input
+                      name="name"
+                      value={form.name}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                       placeholder="Ex: École Primaire Liberté"
-                      required 
+                      required
                     />
                   </div>
                 </div>
@@ -246,10 +250,10 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <select 
-                      name="type" 
-                      value={form.type} 
-                      onChange={handleChange} 
+                    <select
+                      name="type"
+                      value={form.type}
+                      onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                     >
                       <option value="private">Privé</option>
@@ -264,11 +268,11 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <GraduationCap className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <select 
-                      name="level" 
-                      required 
-                      value={form.level} 
-                      onChange={handleChange} 
+                    <select
+                      name="level"
+                      required
+                      value={form.level}
+                      onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                     >
                       <option value="primary">Primaire</option>
@@ -277,12 +281,13 @@ export const EditSchoolForm: React.FC = () => {
                     </select>
                   </div>
                   <div className="flex items-center space-x-2 mt-1">
-                    <div className={`w-3 h-3 rounded-full ${getLevelColor(form.level)}`}></div>
+                    <div className={`w-3 h-3 rounded-full ${getLevelColor(form.level[0])}`}></div>
                     <span className="text-xs text-gray-500">
-                      {form.level === 'primary' && 'Marqueur jaune sur la carte'}
-                      {form.level === 'secondary' && 'Marqueur rouge sur la carte'}
-                      {form.level === 'high_school' && 'Marqueur vert sur la carte'}
+                      {form.level.includes('primary') && 'Marqueur jaune sur la carte '}
+                      {form.level.includes('secondary') && 'Marqueur rouge sur la carte '}
+                      {form.level.includes('high_school') && 'Marqueur vert sur la carte'}
                     </span>
+
                   </div>
                 </div>
 
@@ -292,11 +297,11 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <select 
-                      name="region" 
-                      required 
-                      value={form.region} 
-                      onChange={handleChange} 
+                    <select
+                      name="region"
+                      required
+                      value={form.region}
+                      onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                     >
                       <option value="Dakar">Dakar</option>
@@ -324,7 +329,7 @@ export const EditSchoolForm: React.FC = () => {
               <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
                 Localisation
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
@@ -332,13 +337,13 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      name="address" 
-                      value={form.address} 
-                      onChange={handleChange} 
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" 
+                    <input
+                      name="address"
+                      value={form.address}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                       placeholder="Ex: Avenue Bourguiba, Dakar"
-                      required 
+                      required
                     />
                   </div>
                 </div>
@@ -349,15 +354,15 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <Navigation className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      name="lat" 
-                      type="number" 
+                    <input
+                      name="lat"
+                      type="number"
                       step="any"
-                      value={form.coordinates.lat} 
-                      onChange={handleChange} 
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" 
+                      value={form.coordinates.lat}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                       placeholder="Ex: 14.6937"
-                      required 
+                      required
                     />
                   </div>
                 </div>
@@ -368,15 +373,15 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <Navigation className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      name="lng" 
-                      type="number" 
+                    <input
+                      name="lng"
+                      type="number"
                       step="any"
-                      value={form.coordinates.lng} 
-                      onChange={handleChange} 
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" 
+                      value={form.coordinates.lng}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                       placeholder="Ex: -17.4441"
-                      required 
+                      required
                     />
                   </div>
                 </div>
@@ -420,7 +425,7 @@ export const EditSchoolForm: React.FC = () => {
                           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         />
                         <MapClickHandler onLocationSelect={handleLocationSelect} />
-                        
+
                         {/* Marqueur de position sélectionnée */}
                         {selectedLocation && (
                           <Marker
@@ -500,7 +505,7 @@ export const EditSchoolForm: React.FC = () => {
               <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
                 Statistiques et contact
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
@@ -508,14 +513,14 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      name="students" 
-                      type="number" 
-                      value={form.students} 
-                      onChange={handleChange} 
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" 
+                    <input
+                      name="students"
+                      type="number"
+                      value={form.students}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                       placeholder="Ex: 450"
-                      required 
+                      required
                     />
                   </div>
                 </div>
@@ -526,15 +531,15 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <Star className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      name="rating" 
-                      type="number" 
-                      step="0.1" 
-                      min="0" 
+                    <input
+                      name="rating"
+                      type="number"
+                      step="0.1"
+                      min="0"
                       max="5"
-                      value={form.rating || ''} 
-                      onChange={handleChange} 
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" 
+                      value={form.rating || ''}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                       placeholder="Ex: 4.2"
                     />
                   </div>
@@ -546,11 +551,11 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      name="phone" 
-                      value={form.phone || ''} 
-                      onChange={handleChange} 
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" 
+                    <input
+                      name="phone"
+                      value={form.phone || ''}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                       placeholder="Ex: +221 33 123 45 67"
                     />
                   </div>
@@ -562,12 +567,12 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      name="email" 
-                      type="email" 
-                      value={form.email || ''} 
-                      onChange={handleChange} 
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" 
+                    <input
+                      name="email"
+                      type="email"
+                      value={form.email || ''}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                       placeholder="Ex: contact@ecole.edu.sn"
                     />
                   </div>
@@ -579,12 +584,12 @@ export const EditSchoolForm: React.FC = () => {
                   </label>
                   <div className="relative">
                     <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      name="established" 
-                      type="number" 
-                      value={form.established || ''} 
-                      onChange={handleChange} 
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" 
+                    <input
+                      name="established"
+                      type="number"
+                      value={form.established || ''}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                       placeholder="Ex: 1985"
                     />
                   </div>
@@ -597,7 +602,7 @@ export const EditSchoolForm: React.FC = () => {
               <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
                 Infrastructures et médias
               </h3>
-              
+
               <div className="space-y-4">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
@@ -606,11 +611,11 @@ export const EditSchoolForm: React.FC = () => {
                       Infrastructures disponibles
                     </div>
                   </label>
-                  <input 
-                    name="facilities" 
-                    value={form.facilities.join(', ')} 
-                    onChange={handleChange} 
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" 
+                  <input
+                    name="facilities"
+                    value={form.facilities.join(', ')}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                     placeholder="Ex: Bibliothèque, Cantine, Terrain de sport, Laboratoire"
                   />
                   <p className="text-xs text-gray-500">Séparez les infrastructures par des virgules</p>
@@ -668,15 +673,15 @@ export const EditSchoolForm: React.FC = () => {
                   <div className="space-y-2">
                     <h4 className="text-sm font-medium text-blue-800">Modification</h4>
                     <p className="text-sm text-blue-700">
-                      Les modifications seront appliquées immédiatement après sauvegarde. 
+                      Les modifications seront appliquées immédiatement après sauvegarde.
                       Assurez-vous de vérifier toutes les informations avant de confirmer.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={isSubmitting}
                 className="w-full bg-blue-500 text-white py-4 px-6 rounded-lg font-semibold hover:bg-blue-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >

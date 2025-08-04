@@ -2,7 +2,7 @@ export interface School {
   id: string;
   name: string;
   type: 'private' | 'public';
-  level: 'primary' | 'secondary' | 'high_school';
+  level: ('primary' | 'secondary' | 'high_school')[];
   address: string;
   region: string;
   coordinates: {
@@ -17,7 +17,7 @@ export interface School {
   phone?: string;
   email?: string;
   website?: string;
-  established: number;
+  established: number; // creation_date
   user: User['id'];
 }
 
@@ -37,11 +37,15 @@ export interface User {
   role: 'user' | 'admin' | 'representant' | 'ministere';
   favorites: string[];
   avatar?: string;
+  phone?: string;
+  status: 'active' | 'inactive' | 'pending';
+  createdAt: string;
 }
 
 export interface FilterState {
   type: string[];
   region: string[];
+  level: string[];
   minStudents: number;
   maxStudents: number;
   minRating: number;

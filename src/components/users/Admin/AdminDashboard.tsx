@@ -9,8 +9,9 @@ import {
   PlusCircle,
   Edit3
 } from 'lucide-react';
-import { mockSchools, regions, schoolLevels, schoolTypes } from '../../data/mockData';
-import { useNavigation } from '../../hooks/useNavigation';
+import { mockSchools, regions, schoolLevels, schoolTypes } from '../../../data/mockData';
+import { useNavigation } from '../../../hooks/useNavigation';
+import { AdminNav } from './AdminNav';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -39,8 +40,8 @@ ChartJS.register(
 );
 
 export const AdminDashboard: React.FC = () => {
-  const { goToAddSchool, goToEditSchool } = useNavigation();
-  
+  const { goToAddSchool, goToEditSchool, goToSchoolsList } = useNavigation();
+
   const stats = {
     totalSchools: mockSchools.length,
     totalStudents: mockSchools.reduce((sum, s) => sum + s.students, 0),
@@ -54,17 +55,24 @@ export const AdminDashboard: React.FC = () => {
     students: mockSchools.filter(s => s.region === region).reduce((sum, s) => sum + s.students, 0)
   })).filter(item => item.count > 0);
 
-    const schoolsByLevel = schoolLevels.map(type => ({
+  const schoolsByLevel = schoolLevels.map(type => {
+    const levelValue = type.value as 'primary' | 'secondary' | 'high_school';
+    return {
       ...type,
-      count: mockSchools.filter(s => s.level === type.value).length,
-      students: mockSchools.filter(s => s.level === type.value).reduce((sum, s) => sum + s.students, 0)
-    }));
+      count: mockSchools.filter(s => s.level.includes(levelValue)).length,
+      students: mockSchools
+        .filter(s => s.level.includes(levelValue))
+        .reduce((sum, s) => sum + s.students, 0)
+    };
+  });
 
-    const schoolsByType = schoolTypes.map(type => ({
-      ...type,
-      count: mockSchools.filter(s => s.type === type.value).length,
-      students: mockSchools.filter(s => s.type === type.value).reduce((sum, s) => sum + s.students, 0)
-    }));
+
+
+  const schoolsByType = schoolTypes.map(type => ({
+    ...type,
+    count: mockSchools.filter(s => s.type === type.value).length,
+    students: mockSchools.filter(s => s.type === type.value).reduce((sum, s) => sum + s.students, 0)
+  }));
 
   // Configuration des graphiques
   const chartOptions = {
@@ -83,7 +91,7 @@ export const AdminDashboard: React.FC = () => {
         cornerRadius: 8,
         displayColors: false,
         callbacks: {
-          label: function(context: any) {
+          label: function (context: any) {
             return `${context.label}: ${context.parsed} établissements`;
           }
         }
@@ -133,7 +141,7 @@ export const AdminDashboard: React.FC = () => {
         cornerRadius: 8,
         displayColors: false,
         callbacks: {
-          label: function(context: any) {
+          label: function (context: any) {
             const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
             const percentage = ((context.parsed / total) * 100).toFixed(1);
             return `${context.label}: ${context.parsed} établissements (${percentage}%)`;
@@ -146,12 +154,12 @@ export const AdminDashboard: React.FC = () => {
           weight: 'bold' as const,
           size: 14
         },
-        formatter: function(value: number, context: any) {
+        formatter: function (value: number, context: any) {
           const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
           const percentage = ((value / total) * 100).toFixed(1);
           return percentage + '%';
         },
-        display: function(context: any) {
+        display: function (context: any) {
           const value = context.parsed;
           const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
           const percentage = (value / total) * 100;
@@ -236,6 +244,9 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Navigation Admin */}
+      <AdminNav />
+
       {/* Header */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between">
@@ -246,6 +257,14 @@ export const AdminDashboard: React.FC = () => {
 
           <div className="flex items-center space-x-3">
             <button
+              onClick={goToSchoolsList}
+              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <School className="w-4 h-4" />
+              <span>Voir tous les établissements</span>
+            </button>
+
+            <button
               onClick={goToAddSchool}
               className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             >
@@ -253,7 +272,7 @@ export const AdminDashboard: React.FC = () => {
               <span>Ajouter école</span>
             </button>
 
-            <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button className="flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
               <Download className="w-4 h-4" />
               <span>Exporter</span>
             </button>
@@ -328,16 +347,60 @@ export const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Actions Rapides */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Actions Rapides</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <button
+            onClick={goToSchoolsList}
+            className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors group"
+          >
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-200 transition-colors">
+              <School className="w-6 h-6 text-blue-600" />
+            </div>
+            <span className="text-sm font-medium text-gray-900">Gérer les établissements</span>
+            <span className="text-xs text-gray-600 mt-1">Voir, modifier, supprimer</span>
+          </button>
+
+          <button
+            onClick={goToAddSchool}
+            className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-colors group"
+          >
+            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-green-200 transition-colors">
+              <PlusCircle className="w-6 h-6 text-green-600" />
+            </div>
+            <span className="text-sm font-medium text-gray-900">Ajouter école</span>
+            <span className="text-xs text-gray-600 mt-1">Créer un nouvel établissement</span>
+          </button>
+
+          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-purple-50 hover:border-purple-300 transition-colors group">
+            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-purple-200 transition-colors">
+              <Download className="w-6 h-6 text-purple-600" />
+            </div>
+            <span className="text-sm font-medium text-gray-900">Exporter données</span>
+            <span className="text-xs text-gray-600 mt-1">CSV, Excel, PDF</span>
+          </button>
+
+          <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-orange-50 hover:border-orange-300 transition-colors group">
+            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-orange-200 transition-colors">
+              <BarChart3 className="w-6 h-6 text-orange-600" />
+            </div>
+            <span className="text-sm font-medium text-gray-900">Rapports</span>
+            <span className="text-xs text-gray-600 mt-1">Analyses détaillées</span>
+          </button>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Schools by Region */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Répartition par région</h3>
-          
+
           {/* Graphique en barres */}
           <div className="h-48 mb-6">
             <Bar data={regionChartData} options={chartOptions} />
           </div>
-          
+
           {/* Liste détaillée */}
           <div className="space-y-3">
             {schoolsByRegion.slice(0, 8).map((item) => {
@@ -368,12 +431,12 @@ export const AdminDashboard: React.FC = () => {
         {/* Schools by Level */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Répartition par niveau</h3>
-          
+
           {/* Graphique en donut */}
           <div className="h-48 mb-6 flex items-center justify-center">
             <Doughnut data={levelChartData} options={donutOptions} />
           </div>
-          
+
           {/* Liste détaillée */}
           <div className="space-y-3">
             {schoolsByLevel.map((type) => {
@@ -400,12 +463,12 @@ export const AdminDashboard: React.FC = () => {
         {/* Schools by Type */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Répartition par type</h3>
-          
+
           {/* Graphique en donut */}
           <div className="h-48 mb-6 flex items-center justify-center">
             <Doughnut data={typeChartData} options={donutOptions} />
           </div>
-          
+
           {/* Liste détaillée */}
           <div className="space-y-3">
             {schoolsByType.map((type) => {
@@ -487,17 +550,27 @@ export const AdminDashboard: React.FC = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${school.level === 'primary' ? 'bg-green-100 text-green-800' :
-                      school.level === 'secondary' ? 'bg-blue-100 text-blue-800' :
-                        school.level === 'high_school' ? 'bg-purple-100 text-purple-800' :
-                          'bg-red-100 text-red-800'
-                      }`}>
-                      {
-                        school.level === 'primary' ? 'Primaire' :
-                          school.level === 'secondary' ? 'Collège' : 'Lycée'
-                      }
-                    </span>
+                    <div className="flex flex-wrap gap-1">
+                      {school.level.map((lvl) => {
+                        const { bg, text, label } =
+                          lvl === 'primary'
+                            ? { bg: 'bg-green-100', text: 'text-green-800', label: 'Primaire' }
+                            : lvl === 'secondary'
+                              ? { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Collège' }
+                              : { bg: 'bg-purple-100', text: 'text-purple-800', label: 'Lycée' };
+
+                        return (
+                          <span
+                            key={lvl}
+                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${bg} ${text}`}
+                          >
+                            {label}
+                          </span>
+                        );
+                      })}
+                    </div>
                   </td>
+
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {school.region}
                   </td>
@@ -511,7 +584,7 @@ export const AdminDashboard: React.FC = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button 
+                    <button
                       onClick={() => goToEditSchool(school.id)}
                       className="text-blue-600 hover:text-blue-900 mr-3"
                     >
@@ -528,13 +601,13 @@ export const AdminDashboard: React.FC = () => {
       {/* Section Statistiques Avancées */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <h3 className="text-xl font-semibold text-gray-900 mb-6">Statistiques Avancées</h3>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Top 5 des régions par nombre d'étudiants */}
           <div>
             <h4 className="text-lg font-medium text-gray-900 mb-4">Top 5 - Régions par nombre d'étudiants</h4>
             <div className="h-64">
-              <Bar 
+              <Bar
                 data={{
                   labels: schoolsByRegion
                     .sort((a, b) => b.students - a.students)
@@ -563,7 +636,7 @@ export const AdminDashboard: React.FC = () => {
                     borderRadius: 8,
                     borderSkipped: false,
                   }]
-                }} 
+                }}
                 options={{
                   ...chartOptions,
                   scales: {
@@ -571,7 +644,7 @@ export const AdminDashboard: React.FC = () => {
                     y: {
                       ...chartOptions.scales.y,
                       ticks: {
-                        callback: function(value: any) {
+                        callback: function (value: any) {
                           return value.toLocaleString() + ' étudiants';
                         }
                       }
@@ -582,13 +655,13 @@ export const AdminDashboard: React.FC = () => {
                     tooltip: {
                       ...chartOptions.plugins.tooltip,
                       callbacks: {
-                        label: function(context: any) {
+                        label: function (context: any) {
                           return `${context.label}: ${context.parsed.toLocaleString()} étudiants`;
                         }
                       }
                     }
                   }
-                }} 
+                }}
               />
             </div>
           </div>
@@ -597,7 +670,7 @@ export const AdminDashboard: React.FC = () => {
           <div>
             <h4 className="text-lg font-medium text-gray-900 mb-4">Répartition par année de création</h4>
             <div className="h-64">
-              <Bar 
+              <Bar
                 data={{
                   labels: ['1950-1960', '1961-1970', '1971-1980', '1981-1990', '1991-2000', '2001-2010', '2011-2020', '2021+'],
                   datasets: [{
@@ -617,7 +690,7 @@ export const AdminDashboard: React.FC = () => {
                     borderRadius: 8,
                     borderSkipped: false,
                   }]
-                }} 
+                }}
                 options={{
                   ...chartOptions,
                   plugins: {
@@ -625,13 +698,13 @@ export const AdminDashboard: React.FC = () => {
                     tooltip: {
                       ...chartOptions.plugins.tooltip,
                       callbacks: {
-                        label: function(context: any) {
+                        label: function (context: any) {
                           return `${context.parsed} établissements créés`;
                         }
                       }
                     }
                   }
-                }} 
+                }}
               />
             </div>
           </div>

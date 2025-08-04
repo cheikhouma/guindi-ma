@@ -6,7 +6,10 @@ export const mockUser: User = {
   email: 'aminata@example.com',
   role: 'admin',
   favorites: ['1', '3'],
-  avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100'
+  avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
+  phone: '+221 77 123 45 67',
+  status: 'active',
+  createdAt: '2024-01-15'
 };
 
 export const mockSchools: School[] = [
@@ -14,7 +17,7 @@ export const mockSchools: School[] = [
     id: '1',
     name: 'École Primaire Liberté',
     type: 'private',
-    level: 'primary',
+    level: ['primary'],
     address: 'Avenue Bourguiba, Dakar',
     region: 'Dakar',
     coordinates: { lat: 14.6937, lng: -17.4441 },
@@ -44,7 +47,7 @@ export const mockSchools: School[] = [
     id: '2',
     name: 'Collège Blaise Diagne',
     type: 'public',
-    level: 'secondary',
+    level: ['secondary'],
     address: 'Rue Félix Faure,Medina, Dakar',
     region: 'Kaffrine',
     coordinates: { lat: 14.6728, lng: -17.4519 },
@@ -71,7 +74,7 @@ export const mockSchools: School[] = [
   {
     id: '3',
     name: 'Lycée Lamine Guèye',
-    level: 'high_school',
+    level: ['high_school'],
     type: 'public',
     address: 'Avenue Lamine Guèye, Dakar',
     region: 'Fatick',
@@ -99,7 +102,7 @@ export const mockSchools: School[] = [
   {
     id: '4',
     name: 'École Primaire de Thiès',
-    level: 'primary',
+    level: ['primary'],
     type: 'public',
     address: 'Centre-ville, Thiès',
     region: 'Thiès',
@@ -118,7 +121,7 @@ export const mockSchools: School[] = [
   {
     id: '5',
     name: 'Lycée de Saint-Louis',
-    level: 'high_school',
+    level: ['high_school'],
     type: 'public',
     address: 'Île de Saint-Louis',
     region: 'Saint-Louis',
@@ -139,7 +142,7 @@ export const mockSchools: School[] = [
     id: '6',
     name: 'International School of Dakar',
     type: 'private',
-    level: 'high_school',
+    level: ['primary', 'secondary', 'high_school'],
     address: 'Mermoz, Dakar',
     region: 'Kédougou',
     coordinates: { lat: 14.7167, lng: -17.4694 },
@@ -168,7 +171,7 @@ export const mockSchools: School[] = [
   {
     id: '7',
     name: 'Lycée Français Jean‑Mermoz',
-    level: 'high_school',
+    level: ['primary', 'secondary', 'high_school'],
     type: 'private',
     address: 'Avenue Cheikh Anta Diop, Ouakam, Dakar',
     region: 'Matam',
@@ -187,8 +190,8 @@ export const mockSchools: School[] = [
       }
     ],
     images: [
-      'https://example.com/mermoz1.jpg',
-      'https://example.com/mermoz2.jpg'
+      'https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg?auto=compress&cs=tinysrgb&w=500',
+      'https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=500'
     ],
     phone: '+221 33 860 45 33',
     email: 'contact@lyceemermoz.sn',
@@ -198,7 +201,7 @@ export const mockSchools: School[] = [
   {
     id: '8',
     name: 'Cours Sainte‑Marie de Hann',
-    level: 'primary',
+    level: ['primary', 'secondary'],
     type: 'private',
     address: 'Hann Bel‑Air, Dakar',
     region: 'Saint-Louis',
@@ -217,8 +220,8 @@ export const mockSchools: School[] = [
       }
     ],
     images: [
-      'https://example.com/sainte-marie1.jpg',
-      'https://example.com/sainte-marie2.jpg'
+      'https://images.pexels.com/photos/1370296/pexels-photo-1370296.jpeg?auto=compress&cs=tinysrgb&w=500',
+      'https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg?auto=compress&cs=tinysrgb&w=500'
     ],
     phone: '+221 33 123 00 00',
     email: 'contact@cmsm.sn',
@@ -228,7 +231,7 @@ export const mockSchools: School[] = [
   {
     id: '9',
     name: 'École Ndiarème B',
-    level: 'primary',
+    level: ['primary'],
     type: 'public',
     address: 'Guinaw Rails, Dakar',
     region: 'Dakar',
@@ -238,16 +241,127 @@ export const mockSchools: School[] = [
     rating: 4.3,
     reviews: [],
     images: [
-      'https://example.com/ndiareme1.jpg'
+      'https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=500'
     ],
     phone: '',
     email: '',
     established: 1996,
     user: mockUser.id
   }
-
 ];
 
+export const mockUsers: User[] = [
+  {
+    id: '1',
+    name: 'Aminata Diallo',
+    email: 'aminata@example.com',
+    role: 'admin',
+    favorites: ['1', '3'],
+    avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
+    phone: '+221 77 123 45 67',
+    status: 'active',
+    createdAt: '2024-01-15'
+  },
+  {
+    id: '2',
+    name: 'Mamadou Sy',
+    email: 'mamadou.sy@example.com',
+    role: 'user',
+    favorites: ['2', '4'],
+    avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
+    phone: '+221 76 234 56 78',
+    status: 'active',
+    createdAt: '2024-02-20'
+  },
+  {
+    id: '3',
+    name: 'Fatou Diop',
+    email: 'fatou.diop@example.com',
+    role: 'representant',
+    favorites: ['1', '5'],
+    avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100',
+    phone: '+221 78 345 67 89',
+    status: 'active',
+    createdAt: '2024-01-10'
+  },
+  {
+    id: '4',
+    name: 'Ousmane Ba',
+    email: 'ousmane.ba@example.com',
+    role: 'ministere',
+    favorites: ['3', '6'],
+    avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=100',
+    phone: '+221 77 456 78 90',
+    status: 'active',
+    createdAt: '2024-03-05'
+  },
+  {
+    id: '5',
+    name: 'Aïcha Fall',
+    email: 'aicha.fall@example.com',
+    role: 'user',
+    favorites: ['2'],
+    avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
+    phone: '+221 76 567 89 01',
+    status: 'pending',
+    createdAt: '2024-04-12'
+  },
+  {
+    id: '6',
+    name: 'Ibrahima Ndiaye',
+    email: 'ibrahima.ndiaye@example.com',
+    role: 'representant',
+    favorites: ['4', '7'],
+    avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
+    phone: '+221 78 678 90 12',
+    status: 'active',
+    createdAt: '2024-02-28'
+  },
+  {
+    id: '7',
+    name: 'Mariama Thiam',
+    email: 'mariama.thiam@example.com',
+    role: 'user',
+    favorites: ['1', '3', '5'],
+    avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100',
+    phone: '+221 77 789 01 23',
+    status: 'inactive',
+    createdAt: '2024-01-30'
+  },
+  {
+    id: '8',
+    name: 'Abdou Sall',
+    email: 'abdou.sall@example.com',
+    role: 'admin',
+    favorites: ['2', '6'],
+    avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=100',
+    phone: '+221 76 890 12 34',
+    status: 'active',
+    createdAt: '2024-03-15'
+  },
+  {
+    id: '9',
+    name: 'Khadija Cissé',
+    email: 'khadija.cisse@example.com',
+    role: 'ministere',
+    favorites: ['4'],
+    avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
+    phone: '+221 78 901 23 45',
+    status: 'active',
+    createdAt: '2024-02-05'
+  },
+  {
+    id: '10',
+    name: 'Modou Gueye',
+    email: 'modou.gueye@example.com',
+    role: 'user',
+    favorites: ['1', '2', '3'],
+    avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
+    phone: '+221 77 012 34 56',
+    status: 'pending',
+    createdAt: '2024-04-20'
+  }
+];
 
 
 export const regions = [
